@@ -339,4 +339,8 @@
       const a = document.createElement("a");
       a.href = url;
       a.download = "2026_Graduate_School_Interviews.ics";
-      document.body.
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+</script>
