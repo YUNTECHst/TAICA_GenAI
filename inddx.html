@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>116 學年度碩士班甄試入學（推甄）全方位互動大禮包</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              900: '#0c4a6e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+    body {
+      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 7px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f8fafc;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .gantt-day-col {
+      min-width: 36px;
+      width: 36px;
+      max-width: 36px;
+    }
+    .gantt-day-col.conflict-highlight {
+      background-color: #fee2e2 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-100/70 text-slate-800 antialiased min-h-screen flex flex-col text-sm">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
+            <i class="fa-solid fa-graduation-cap text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-slate-900 tracking-tight leading-none">116 碩甄互動大禮包</h1>
+            <span class="text-xs font-semibold text-sky-600">資工 / 資管 / AI / 電機跨校系備戰工作台</span>
+          </div>
+        </div>
+
+        <!-- Quick Jump Links -->
+        <nav class="hidden lg:flex items-center gap-2 text-sm font-semibold text-slate-600">
+          <a href="#gantt-container-section" class="px-3.5 py-2 rounded-lg hover:text-sky-600 hover:bg-slate-100 transition text-sky-700 bg-sky-50/70">
+            <i class="fa-solid fa-chart-gantt mr-1.5"></i> 甘特圖時程矩陣
+          </a>
+          <a href="#schools-detail-section" class="px-3.5 py-2 rounded-lg hover:text-sky-600 hover:bg-slate-100 transition">
+            <i class="fa-solid fa-layer-group mr-1.5"></i> 學校＋系組備審規範全覽
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"></span>已核實最新 116 簡章時程 (含 9/15 起跑)
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-8">
+
+    <!-- Top Gantt Section Styled exactly as the User's Image -->
+    <section id="gantt-container-section" class="bg-white border border-slate-200/90 rounded-2xl shadow-sm p-6 overflow-hidden">
+      
+      <!-- Filter and Controller Toolbar -->
+      <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+        <!-- Event Type Filters -->
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-sm font-bold text-slate-600 mr-1">事件篩選：</span>
+          <button onclick="setEventFilter('all')" id="btn-filter-all" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-slate-900 text-white shadow-sm transition">全部事件</button>
+          <button onclick="setEventFilter('reg')" id="btn-filter-reg" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">📝 報名起訖</button>
+          <button onclick="setEventFilter('first')" id="btn-filter-first" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🔍 初審公告</button>
+          <button onclick="setEventFilter('interview')" id="btn-filter-interview" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🗣️ 口試日期 (含撞期)</button>
+          <button onclick="setEventFilter('release')" id="btn-filter-release" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🎉 榜單公布</button>
+        </div>
+
+        <!-- Sorting and Conflict highlight Controls -->
+        <div class="flex flex-wrap items-center gap-3">
+          <!-- Sort Selector -->
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5">
+            <span class="text-xs font-bold text-slate-600 flex items-center gap-1">
+              <i class="fa-solid fa-arrow-down-up-across-line text-sky-600"></i> 甘特圖排序：
+            </span>
+            <select id="gantt-sort-select" onchange="handleSortChange()" class="text-xs font-semibold bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500">
+              <option value="default">預設清單順序</option>
+              <option value="regStart">報名開始時間 (由早到晚)</option>
+              <option value="regEnd">報名截止時間 (由早到晚)</option>
+              <option value="firstAnnounce">初審/逕取名單公告日 (由早到晚)</option>
+              <option value="interview">最早口試日期 (由早到晚)</option>
+              <option value="release">最終放榜日期 (由早到晚)</option>
+            </select>
+            <button onclick="toggleSortOrder()" id="btn-sort-dir" title="切換升序 / 降序" class="p-1.5 rounded-lg text-xs bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 transition">
+              <i class="fa-solid fa-arrow-up-wide-short" id="sort-dir-icon"></i>
+            </button>
+          </div>
+
+          <!-- Conflict Toggle -->
+          <label class="inline-flex items-center cursor-pointer select-none text-xs sm:text-sm font-semibold text-rose-700 bg-rose-50 px-3.5 py-1.5 rounded-xl border border-rose-200 hover:bg-rose-100 transition">
+            <input type="checkbox" id="conflict-toggle" onchange="toggleConflictHighlight()" class="w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500 mr-2">
+            僅突顯口試撞期日 (11/6, 11/13, 11/14, 11/20)
+          </label>
+        </div>
+      </div>
+
+      <!-- Quick Timeline Fast-Jump Bar -->
+      <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-500 font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-crosshairs text-sky-600"></i> 快速捲動定位：
+        </span>
+        <button onclick="scrollToDate('09/15')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-100 text-slate-700 font-medium transition">⏪ 9月中（高科/交大起跑）</button>
+        <button onclick="scrollToDate('09/29')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-100 text-slate-700 font-medium transition">📍 10月報名上傳高峰期</button>
+        <button onclick="scrollToDate('11/06')" class="px-2.5 py-1 rounded-md bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 transition">🔥 11/06 面試大撞期</button>
+        <button onclick="scrollToDate('11/13')" class="px-2.5 py-1 rounded-md bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 transition">🔥 11/13 面試大撞期</button>
+        <button onclick="scrollToDate('11/20')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-emerald-100 text-emerald-800 font-medium transition">🎉 11/20 頂大放榜日</button>
+      </div>
+
+      <!-- Gantt Matrix Table Layout -->
+      <div class="mt-3 overflow-x-auto custom-scrollbar border border-slate-200 rounded-xl" id="gantt-scroll-box">
+        <table class="w-full text-left border-collapse select-none" id="gantt-table">
+          <thead>
+            <!-- Header Day Row (09/14 ~ 12/05) -->
+            <tr class="bg-slate-50/90 border-b border-slate-200 text-xs text-slate-500" id="gantt-header-row">
+              <th class="py-3 px-4 w-64 min-w-[250px] max-w-[250px] sticky left-0 bg-slate-50 z-30 border-r border-slate-200 font-bold text-slate-700">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-extrabold">學校與組別</span>
+                  <span class="text-xs text-slate-400 font-normal">09/14 - 12/05</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-sm" id="gantt-body-rows">
+            <!-- Dynamically populated school rows -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Legend and Notes below Gantt -->
+      <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs sm:text-sm text-slate-600 gap-3">
+        <div class="flex flex-wrap items-center gap-4">
+          <span class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-sky-500 text-[10px] text-white flex items-center justify-center font-bold">📝</span> 報名與審查資料上傳條 (全校完整呈現)</span>
+          <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-amber-500 text-[10px] text-white flex items-center justify-center font-bold">查</span> 初審/面試名單公告</span>
+          <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-rose-600 text-[10px] text-white flex items-center justify-center font-bold">試</span> 面試複試（撞期特別警示）</span>
+          <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-slate-800 text-[10px] text-white flex items-center justify-center font-bold">榜</span> 放榜日</span>
+          <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-md bg-purple-700 text-[10px] text-white flex items-center justify-center font-bold">簡</span> 提前繳交簡報截止</span>
+        </div>
+        <div class="text-xs text-slate-400 font-medium">
+          <i class="fa-regular fa-hand-pointer mr-1"></i> 可橫向拖曳滑動查看 9 月中旬至 12 月初完整時程
+        </div>
+      </div>
+    </section>
+
+    <!-- Specific Schools + Departments Detail Cards Section -->
+    <section id="schools-detail-section" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2.5">
+            <span class="w-2.5 h-7 bg-sky-600 rounded-sm"></span>
+            各校＋系組詳細資料、考核方式、推薦信與專用表件
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">已完整整合：指定備審項目、系所專用表件系統、推薦信提交限制、硬性頁數與專題簽章規範</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="text" id="dept-search-input" oninput="renderSchoolDeptCards()" placeholder="搜尋學校或系組 (如: 清大、成大、資管)..." class="pl-9 pr-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white w-72 shadow-sm">
+          </div>
+        </div>
+      </div>
+
+      <!-- School & Department List (Grid) -->
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-6" id="school-dept-cards-container">
+        <!-- Dynamically generated via JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-sm text-slate-500">
+    116 學年度碩士班甄試互動工作台 ｜ 資料已根據各校最新簡章與公告完成核實，正式規範依各校複試簡章為準
+  </footer>
+
+  <script>
+    // 1. Definition of Dates on the Gantt Grid: 2026-09-14 to 2026-12-05 (Covers NKUST 9/15 and NYCU 9/23)
+    const startDate = new Date(2026, 8, 14); // Sept 14, 2026
+    const totalDays = 83; // Spans until Dec 5, 2026
+    const daysArray = [];
+
+    const conflictDatesStr = ["11/06", "11/13", "11/14", "11/20"];
+
+    for (let i = 0; i < totalDays; i++) {
+      const d = new Date(startDate);
+      d.setDate(startDate.getDate() + i);
+      const month = d.getMonth() + 1;
+      const day = d.getDate();
+      const weekDay = ["日", "一", "二", "三", "四", "五", "六"][d.getDay()];
+      const dateStr = `${month < 10 ? '0' + month : month}/${day < 10 ? '0' + day : day}`;
+      
+      const isFirstDayOfMonth = day === 1;
+      const isConflict = conflictDatesStr.includes(dateStr);
+
+      daysArray.push({
+        index: i,
+        dateObj: d,
+        month,
+        day,
+        weekDay,
+        dateStr,
+        isFirstDayOfMonth,
+        isConflict
+      });
+    }
+
+    // Convert date string MM/DD to grid day index
+    function dateToIndex(mmdd) {
+      if (!mmdd) return -1;
+      const [m, d] = mmdd.split('/').map(Number);
+      for (let i = 0; i < daysArray.length; i++) {
+        if (daysArray[i].month === m && daysArray[i].day === d) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    // Quick scroll function to a specific date
+    function scrollToDate(mmdd) {
+      const idx = dateToIndex(mmdd);
+      if (idx !== -1) {
+        const scrollBox = document.getElementById('gantt-scroll-box');
+        if (scrollBox) {
+          scrollBox.scrollTo({
+            left: Math.max(0, idx * 36 - 60),
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+
+    // 2. School and Program Dataset with Gantt Node Coordinates & Details
+    const schoolMatrixData = [
+      {
+        id: "ncku",
+        name: "成功大學",
+        colorDot: "bg-red-600",
+        barColor: "from-rose-500 to-red-600",
+        departmentsSummary: "資訊工程 / 資訊管理 / 人工智慧學程 / 工科",
+        regStart: "09/29",
+        regEnd: "10/05",
+        primaryDates: {
+          firstAnnounce: "10/27",
+          interview: "10/29",
+          release: "11/20"
+        },
+        recommendationRule: {
+          quota: "2 封",
+          method: "校系統線上填寫",
+          deadline: "10/06 23:59",
+          notes: "考生於報名網頁「推薦函作業」發送通知信，推薦人線上填答。"
+        },
+        nodes: [
+          { type: "first", date: "10/27", label: "查", title: "成大 全系所初審/逕取名單公告" },
+          { type: "interview", date: "10/29", label: "試", title: "成大 工資管面試" },
+          { type: "interview", date: "10/30", label: "試", title: "成大 工科丁己組面試" },
+          { type: "interview", date: "10/31", label: "試", title: "成大 工科甲乙丙戊組面試" },
+          { type: "interview", date: "11/06", label: "試", title: "🔥【面試大撞期】成大資工/AI/製造資訊(下午)面試", isConflict: true },
+          { type: "release", date: "11/20", label: "榜", title: "成大 全系所第二階段正式放榜", isConflict: true }
+        ],
+        departments: [
+          {
+            name: "資訊工程學系碩士班",
+            examType: "審查 50% + 口試 50% (審查特優得免面試逕取，上限 2/3)",
+            firstAnnounce: "115/10/27 前系網公告",
+            interviewDate: "115/11/06 (星期五)",
+            releaseDate: "逕取 10/27 前；最終 11/20",
+            docs: ["歷年成績單(含名次)", "資訊能力證明", "專題與研究計畫書", "外語與其他證明", "讀書計畫", "推薦函 2 封"],
+            specialForms: "【系所專用表】：須至成大資工系網「考生資料表系統」線上登打並儲存。",
+            hardLimits: "無特殊頁數硬限制，請依系統欄位規定格式填寫。",
+            signatureRule: "無額外強制指定專用簽名表。"
+          },
+          {
+            name: "製造資訊與系統研究所 / 工資管",
+            examType: "審查 50% + 口試 50% (審查優異得免口試逕取)",
+            firstAnnounce: "115/10/27 前系網公告",
+            interviewDate: "工資管 10/29；製造資訊 11/06 下午",
+            releaseDate: "115/11/20",
+            docs: ["歷年成績單", "研究計畫書", "自傳", "其他有利資料", "推薦函 2 封"],
+            specialForms: "【系所專用表】：須至該所「考生資料表系統」線上填寫「考生個人資料表」。",
+            hardLimits: "依所方專用系統欄位長度填寫。",
+            signatureRule: "無特定簽章表格要求。"
+          },
+          {
+            name: "人工智慧科技碩士學位學程",
+            examType: "審查 50% + 口試 50% (審查優異免面試逕取，上限 2/3)",
+            firstAnnounce: "115/10/27 前系網公告",
+            interviewDate: "115/11/06 (星期五)",
+            releaseDate: "115/11/20",
+            docs: ["在校成績", "AI軟硬體資訊能力", "專題與研究計畫書", "外語證明", "讀書計畫", "推薦函 2 封"],
+            specialForms: "【系所專用表】：須至學程「考生資料表系統」線上登打個人審查資料。",
+            hardLimits: "無特殊頁數限制。",
+            signatureRule: "無。"
+          },
+          {
+            name: "工程科學系碩士班",
+            examType: "審查 + 口試",
+            firstAnnounce: "115/10/27 前系網公告",
+            interviewDate: "丁己組 10/30；甲乙丙戊組 10/31",
+            releaseDate: "115/11/20",
+            docs: ["歷年成績單(含名次證明)", "自傳", "研究計畫(含讀書計畫)", "其他有利審查資料", "推薦函 2 封"],
+            specialForms: "依簡章規定項目上傳，無特殊獨立表單。",
+            hardLimits: "無特殊頁數限制。",
+            signatureRule: "無。"
+          }
+        ]
+      },
+      {
+        id: "ntu",
+        name: "臺灣大學",
+        colorDot: "bg-blue-600",
+        barColor: "from-blue-500 to-indigo-600",
+        departmentsSummary: "資訊工程 / 資訊管理",
+        regStart: "09/30",
+        regEnd: "10/07",
+        primaryDates: {
+          firstAnnounce: "10/30",
+          interview: "11/06",
+          release: "11/19"
+        },
+        recommendationRule: {
+          quota: "至多 3 封 (選繳)",
+          method: "推薦人線上上傳 PDF",
+          deadline: "10/08 17:00",
+          notes: "報名系統填寫推薦人資料，系統發信後由推薦人登入系統上傳。"
+        },
+        nodes: [
+          { type: "first", date: "10/30", label: "查", title: "台大資管 初審口試名單公布 (第16-71名)" },
+          { type: "release", date: "11/04", label: "榜", title: "台大資管 第1梯次逕取放榜 (第1-15名免試)" },
+          { type: "interview", date: "11/06", label: "試", title: "🔥【面試大撞期】台大資管口試 (管院一號館)", isConflict: true },
+          { type: "release", date: "11/19", label: "榜", title: "台大資工 / 台大資管第2梯次最終放榜" }
+        ],
+        departments: [
+          {
+            name: "資訊工程學系碩士班",
+            examType: "書面審查 100% (無筆試、無口試)",
+            firstAnnounce: "無初審口試，11/19 中午 12:00 前直接放榜",
+            interviewDate: "無口試",
+            releaseDate: "115/11/19 (第二梯次中午12:00前)",
+            docs: ["學位證書/在學證明", "歷年成績單", "名次證明書", "就學計畫", "有利審查資料(ICPC等競賽、報告、著作)", "推薦函至多3封(選繳)"],
+            specialForms: "【系所專用表】：須至「台大資工系網站」線上填寫「個人資料表」，下載 PDF 檔上傳至校方報名系統。",
+            hardLimits: "無特殊頁數限制，內容力求精簡紮實。",
+            signatureRule: "無。"
+          },
+          {
+            name: "資訊管理學系碩士班",
+            examType: "審查 60% + 口試 40% (審查第1–15名逕行錄取免面試)",
+            firstAnnounce: "115/10/30 (系網公布口試名單第16–71名)",
+            interviewDate: "115/11/06 (星期五)",
+            releaseDate: "【第1梯逕取】11/04 中午；【第2梯最終】11/19 中午",
+            docs: ["學位證書/學生證", "歷年成績單", "名次證明書", "就學計畫書", "有利審查資料", "推薦函(選繳)"],
+            specialForms: "【系所專用表】：須至「台大資管系網站」填寫「主要相關科目成績表」與「個人資料表」，下載檔案後上傳校方系統。",
+            hardLimits: "無硬性頁數上限。",
+            signatureRule: "無。"
+          }
+        ]
+      },
+      {
+        id: "nycu",
+        name: "陽明交通大學",
+        colorDot: "bg-teal-600",
+        barColor: "from-teal-500 to-emerald-600",
+        departmentsSummary: "資訊聯招 / 資工丙組 / 資管所 / 電信工程",
+        regStart: "09/23",
+        regEnd: "10/07",
+        primaryDates: {
+          firstAnnounce: "10/24",
+          interview: "10/26",
+          release: "11/05"
+        },
+        recommendationRule: {
+          quota: "至多 2 封",
+          method: "雙系統注意：資院限資訊學院系統發送",
+          deadline: "10/08 17:00 (校系統) / 10/07 (資院)",
+          notes: "資訊聯招與資工丙【限由資訊學院招生系統】發送邀請；資管所由校系統發送。"
+        },
+        nodes: [
+          { type: "first", date: "10/24", label: "查", title: "陽交資工丙 複試名單公告 (中午12:00)" },
+          { type: "interview", date: "10/26", label: "試", title: "陽交資工丙 面試 (10/26-10/27)" },
+          { type: "first", date: "10/30", label: "查", title: "陽交資管所 初試合格名單公告" },
+          { type: "slide", date: "11/05", label: "簡", title: "陽交機械/部分所別 提早繳交口試簡報截止 (中午12:00)" },
+          { type: "release", date: "11/05", label: "榜", title: "陽交資訊聯招 / 資工丙組 第一梯次放榜" },
+          { type: "interview", date: "11/06", label: "試", title: "🔥【面試大撞期】陽交資管所面試", isConflict: true },
+          { type: "release", date: "11/20", label: "榜", title: "陽交資管所 第二梯次放榜", isConflict: true }
+        ],
+        departments: [
+          {
+            name: "資訊聯招 (資科工甲、網工、多工)",
+            examType: "書面審查 100% (無面試，報名1次填3個志願)",
+            firstAnnounce: "無口試，11/05 第一梯次直接放榜",
+            interviewDate: "無口試",
+            releaseDate: "115/11/05 (11/17 正取報到)",
+            docs: ["自傳及讀書計畫", "歷年成績單(含排名)", "競賽獲獎(ICPC/NCPC/IC設計)", "CPE成績", "英檢證明", "專題成果"],
+            specialForms: "【雙系統登打】：須至「資訊學院招生系統」填寫個人資料表，推薦信亦由此系統發送。",
+            hardLimits: "無指定頁數上限。",
+            signatureRule: "【強制指導教授親簽】：多人合作之競賽獲獎或專題成果，必須附上同一組隊員之貢獻比例說明（格式可自擬，總和須為 100%），並強制由指導教授親筆簽名！"
+          },
+          {
+            name: "資訊科學與工程所 丙組 (實作組)",
+            examType: "審查 + 面試 (特優至多 7 名免複試逕取)",
+            firstAnnounce: "115/10/24 中午 12:00 學院公布複試名單",
+            interviewDate: "115/10/26 - 10/27",
+            releaseDate: "115/11/05 第一梯次放榜",
+            docs: ["軟硬體實作能力證明(CPE/開源資安專題)", "自傳與讀書計畫(合併1份PDF)", "歷年成績單"],
+            specialForms: "【雙系統與推薦函】：須於校系統與資訊學院雙系統登錄，推薦函限學院系統發送。",
+            hardLimits: "自傳與讀書計畫須合併為單一 PDF 檔。",
+            signatureRule: "【強制指導教授親簽】：專題需具備組員貢獻說明並由指導教授簽名證明。"
+          },
+          {
+            name: "資訊管理研究所",
+            examType: "審查 50% + 口試 50% (初審特優至多 9 名免口試逕取)",
+            firstAnnounce: "115/10/30 公告初審名單",
+            interviewDate: "115/11/06 (星期五)",
+            releaseDate: "115/11/20 (第二梯次放榜)",
+            docs: ["自傳", "研讀計畫(限5頁)", "歷年成績單(含排名)", "有利審查證明(英檢、證照)"],
+            specialForms: "【系所專用表】：須至陽交大資管所網頁填寫並下載「考生資料表」上傳。",
+            hardLimits: "【頁數硬限制】：研讀計畫書嚴格限制 5 頁以內。",
+            signatureRule: "無額外簽章表格。"
+          }
+        ]
+      },
+      {
+        id: "nthu",
+        name: "清華大學",
+        colorDot: "bg-purple-600",
+        barColor: "from-purple-500 to-indigo-600",
+        departmentsSummary: "資訊工程 (甲/乙/丙組) / 資應所",
+        regStart: "10/07",
+        regEnd: "10/13",
+        primaryDates: {
+          firstAnnounce: "11/06",
+          interview: "11/12",
+          release: "11/20"
+        },
+        recommendationRule: {
+          quota: "2–3 封 (依各組規定)",
+          method: "線上固定中英對照評分格式",
+          deadline: "10/16 17:00",
+          notes: "校線上審查系統填寫，系統提供外籍教授英文格式介面。若教授欲以紙本繳交需事前洽系所同意並貼袋面。"
+        },
+        nodes: [
+          { type: "first", date: "11/06", label: "查", title: "清大資工乙丙/資應 初試結果公告 (11/6前)", isConflict: true },
+          { type: "interview", date: "11/12", label: "試", title: "清大資應所 複試口試 (台積館)" },
+          { type: "interview", date: "11/13", label: "試", title: "🔥【面試大撞期】清大資工乙組/丙組口試 (台達館)", isConflict: true },
+          { type: "release", date: "11/20", label: "榜", title: "清大 全系所第三梯次放榜 (17:00)", isConflict: true }
+        ],
+        departments: [
+          {
+            name: "資工系甲組 (資訊工程組)",
+            examType: "資料審查 100% (無口試)",
+            firstAnnounce: "無口試，11/20 17:00 放榜",
+            interviewDate: "無口試",
+            releaseDate: "115/11/20 17:00 (第三梯次)",
+            docs: ["名次證明", "歷年成績單", "推薦書2封", "學習研究計畫書", "自傳", "有利資料(CPE、專題)"],
+            specialForms: "【專用表格】：須至清大資工系網下載指定中文格式之「個人資料表」上傳。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "無。"
+          },
+          {
+            name: "資工系乙組 (軟體研發組)",
+            examType: "初試(審查 50%) + 複試(口試 50%) (初審特優免口試)",
+            firstAnnounce: "115/11/06 前公布初試",
+            interviewDate: "115/11/13 (星期五)",
+            releaseDate: "115/11/20 17:00",
+            docs: ["大型/開源軟體經驗報告", "推薦書3封", "學習計畫", "自傳", "成績單(含排名)"],
+            specialForms: "【專用表格】：須至資工系網下載中文指定格式「個人資料表」。",
+            hardLimits: "【嚴格頁數限制】：大型/開源報告英文限 10 頁、學習計畫英文限 2 頁、自傳中文限 2 頁！超頁不予審查。",
+            signatureRule: "專題貢獻度由推薦函與實作報告內文呈現。"
+          },
+          {
+            name: "資工系丙組 (人工智慧組)",
+            examType: "初試(審查 50%) + 複試(口試 50%) (初審特優免口試)",
+            firstAnnounce: "115/11/06 前公布初試",
+            interviewDate: "115/11/13 (星期五)",
+            releaseDate: "115/11/20 17:00",
+            docs: ["AI實作經驗報告", "學習計畫", "自傳", "推薦書2封", "成績單"],
+            specialForms: "【專用表格】：須至資工系網下載中文指定格式「個人資料表」。",
+            hardLimits: "【嚴格頁數限制】：AI實作報告英文限 10 頁、學習計畫英文限 2 頁、自傳中文限 2 頁！超頁不予審查。",
+            signatureRule: "無額外簽章表件。"
+          },
+          {
+            name: "資訊系統與應用研究所 (資應所)",
+            examType: "初試 50% + 複試 50% (初審特優免口試)",
+            firstAnnounce: "115/11/06 前公布初審",
+            interviewDate: "115/11/12 (星期四，台積館)",
+            releaseDate: "115/11/20 17:00",
+            docs: ["名次證明", "歷年成績單", "推薦書2封", "學習研究計畫書", "自傳", "英文證明", "有利資料"],
+            specialForms: "線上審查系統填寫個人資料表。",
+            hardLimits: "無特殊頁數限制。",
+            signatureRule: "無。"
+          }
+        ]
+      },
+      {
+        id: "ccu",
+        name: "中正大學",
+        colorDot: "bg-orange-600",
+        barColor: "from-orange-500 to-amber-600",
+        departmentsSummary: "資訊工程 / 資訊管理",
+        regStart: "09/29",
+        regEnd: "10/13",
+        primaryDates: {
+          firstAnnounce: "11/06",
+          interview: "11/13",
+          release: "11/20"
+        },
+        recommendationRule: {
+          quota: "資工 1 封 / 資管 3 封",
+          method: "推薦人線上上傳 PDF",
+          deadline: "10/13 17:00",
+          notes: "輸入推薦人資料，系統發信附網址供推薦人上傳 PDF 檔。提供換人修改功能。"
+        },
+        nodes: [
+          { type: "first", date: "10/29", label: "查", title: "中正大學 開放准考證查詢" },
+          { type: "first", date: "11/06", label: "查", title: "中正資工/資管 複試名單公告 & 資工逕取放榜", isConflict: true },
+          { type: "interview", date: "11/13", label: "試", title: "🔥【面試大撞期】中正資工/中正資管 面試", isConflict: true },
+          { type: "release", date: "11/20", label: "榜", title: "中正大學 第二次榜示放榜", isConflict: true }
+        ],
+        departments: [
+          {
+            name: "資訊工程學系碩士班",
+            examType: "審查 50% + 口試 50% (特優得逕予錄取免口試)",
+            firstAnnounce: "10/29准考證；11/06名單公布與逕取放榜",
+            interviewDate: "115/11/13 (星期五)",
+            releaseDate: "逕取 11/06；面試後放榜 11/20",
+            docs: ["最高學歷成績單(含名次證明)", "自傳履歷", "研究計畫", "專題報告", "大四上修課清單", "線上推薦函1封"],
+            specialForms: "【指定標記科目】：歷年成績單修過微積分、離散、資結、演算法、OS、計組等指定科目請以【黃色螢光筆】畫記標示！",
+            hardLimits: "無嚴格頁數限制。",
+            signatureRule: "無。"
+          },
+          {
+            name: "資訊管理學系碩士班",
+            examType: "審查 50% + 口試 50%",
+            firstAnnounce: "115/11/06 公告複試參加名單",
+            interviewDate: "115/11/13 (星期五)",
+            releaseDate: "115/11/20 第二次榜示",
+            docs: ["歷年成績單(應屆畢業生總名次需列全班前50%並附證明)", "自傳履歷", "研究計畫", "競賽成果", "線上推薦函3封"],
+            specialForms: "應屆畢業生總成績須檢附列全班前 50% 之證明文件。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "無。"
+          }
+        ]
+      },
+      {
+        id: "nsysu",
+        name: "中山大學",
+        colorDot: "bg-sky-600",
+        barColor: "from-sky-500 to-blue-600",
+        departmentsSummary: "資訊工程 / 資訊管理",
+        regStart: "10/01",
+        regEnd: "10/14",
+        primaryDates: {
+          firstAnnounce: "11/03",
+          interview: "11/06",
+          release: "11/24"
+        },
+        recommendationRule: {
+          quota: "資管 2 封 / 資工不收推薦函",
+          method: "資管線上推薦 / 特殊紙本專用信封",
+          deadline: "10/14 17:00 (補件至 10/15)",
+          notes: "資管系採線上推薦；如有境外特准紙本須列印專用信封袋面。"
+        },
+        nodes: [
+          { type: "first", date: "11/03", label: "查", title: "中山資工/資管 初審特優逕取 & 口試名單公告 (17:00)" },
+          { type: "interview", date: "11/06", label: "試", title: "🔥【面試大撞期】中山資工 / 中山資管面試", isConflict: true },
+          { type: "release", date: "11/24", label: "榜", title: "中山大學 全校統一放榜 (17:00)" }
+        ],
+        departments: [
+          {
+            name: "資訊工程學系 (甲/乙組/資安班)",
+            examType: "審查 + 面試 (含基本能力評估與心得報告)",
+            firstAnnounce: "115/11/03 公告初審特優與口試名單",
+            interviewDate: "115/11/06 (星期五)",
+            releaseDate: "115/11/24 17:00 統一放榜",
+            docs: ["歷年成績單(含排名)", "自傳(含個人簡介與生涯規劃)", "其他有利資料(不需推薦信)"],
+            specialForms: "【系所專用表】：須至中山資工系網下載填寫「甄試入學招生初審基本資料表」。",
+            hardLimits: "【嚴格頁數限制】：自傳（含個人簡介與生涯規劃）嚴格限制 2 頁 A4！",
+            signatureRule: "無。"
+          },
+          {
+            name: "資訊管理學系碩士班",
+            examType: "審查 + 面試 (初審特優免面試逕取，上限15名)",
+            firstAnnounce: "115/11/03 17:00 公告逕取與初審名單",
+            interviewDate: "115/11/06 (星期五)",
+            releaseDate: "115/11/24 17:00 統一放榜",
+            docs: ["歷年成績單(含排名)", "讀書計畫", "研究成果", "履歷自傳", "外語證明", "線上推薦信2封"],
+            specialForms: "【系所專用表】：須至中山資管系網下載「個人資料審查表」。",
+            hardLimits: "【嚴格頁數限制】：讀書計畫至多 3 頁！",
+            signatureRule: "無。"
+          }
+        ]
+      },
+      {
+        id: "nchu",
+        name: "中興大學",
+        colorDot: "bg-emerald-600",
+        barColor: "from-emerald-500 to-teal-600",
+        departmentsSummary: "資訊工程 / 資訊管理",
+        regStart: "10/01",
+        regEnd: "10/12",
+        primaryDates: {
+          firstAnnounce: "11/06",
+          interview: "11/13",
+          release: "11/20"
+        },
+        recommendationRule: {
+          quota: "2 封 (資管選繳)",
+          method: "招生系統發信線上填寫",
+          deadline: "10/14 17:00 (報名截止+2日)",
+          notes: "推薦人須於報名截止日起 2 日內線上填答送出。"
+        },
+        nodes: [
+          { type: "first", date: "11/06", label: "查", title: "中興資工/資管 面試名單公布 (13:00起) & 逕取放榜", isConflict: true },
+          { type: "interview", date: "11/13", label: "試", title: "🔥【面試大撞期】中興資工 / 中興資管面試", isConflict: true },
+          { type: "release", date: "11/20", label: "榜", title: "中興大學 第二梯次放榜", isConflict: true }
+        ],
+        departments: [
+          {
+            name: "資訊工程學系 (甲組-資工 / 乙組-AI資安)",
+            examType: "審查 (權重1.0) + 面試 (權重1.5) (審查達90分以上免口試逕取，上限50%)",
+            firstAnnounce: "115/11/06 系網公布逕取與面試名單",
+            interviewDate: "115/11/13 (星期五)",
+            releaseDate: "第一梯逕取 11/06；最終放榜 11/20",
+            docs: ["歷年成績單(含系排)", "自傳(含讀書計畫)", "推薦函2份", "英文證明", "著作論文", "專題報告", "CPE檢定成績"],
+            specialForms: "審查滿 90 分可免面試直接錄取。依規定項目分項上傳。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "無指定簽名表。"
+          },
+          {
+            name: "資訊管理學系碩士班",
+            examType: "審查 50% + 口試 100% (全班前20%且審查同意者免口試，上限50%)",
+            firstAnnounce: "115/11/06 13:00 起於系網公布名單",
+            interviewDate: "115/11/13 (星期五)",
+            releaseDate: "第一梯逕取 11/06；最終放榜 11/20",
+            docs: ["歷年成績單(含名次)", "自傳與研究計畫", "專題/論文", "推薦函2封(選繳)", "CPE/英檢證明"],
+            specialForms: "推薦函為選繳項目。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "無。"
+          }
+        ]
+      },
+      {
+        id: "nccu",
+        name: "政治大學",
+        colorDot: "bg-indigo-600",
+        barColor: "from-indigo-500 to-purple-600",
+        departmentsSummary: "資工(系統組/計算組) / 資管(資管組/科技組)",
+        regStart: "09/29",
+        regEnd: "10/13",
+        primaryDates: {
+          firstAnnounce: "11/13",
+          interview: "11/16",
+          release: "12/01"
+        },
+        recommendationRule: {
+          quota: "2 封",
+          method: "線上發信，推薦人登入上傳簽章 PDF",
+          deadline: "10/13 17:00",
+          notes: "系統發信後推薦人登入上傳簽名 PDF（單一檔案需小於 2MB）。"
+        },
+        nodes: [
+          { type: "first", date: "11/13", label: "查", title: "政大資管系 面試名單公告 (面試前3日)", isConflict: true },
+          { type: "first", date: "11/16", label: "查", title: "政大資工系統組 面試名單公告" },
+          { type: "interview", date: "11/16", label: "試", title: "政大資管系 (資管組/科技組) 面試" },
+          { type: "first", date: "11/18", label: "查", title: "政大資工智慧計算組 面試名單公告" },
+          { type: "interview", date: "11/19", label: "試", title: "政大資工 資訊系統組面試" },
+          { type: "interview", date: "11/21", label: "試", title: "政大資工 智慧計算組面試" },
+          { type: "release", date: "12/01", label: "榜", title: "政治大學 全校統一放榜" }
+        ],
+        departments: [
+          {
+            name: "資工系 (系統組 / 計算組)",
+            examType: "審查 50% + 口試 50%",
+            firstAnnounce: "系統組 11/16 公告；計算組 11/18 公告",
+            interviewDate: "系統組 11/19 (四)；計算組 11/21 (六)",
+            releaseDate: "115/12/01 全校統一放榜",
+            docs: ["歷年成績單總表(含系排名)", "推薦信2份", "其他有利審查資料(國科會、專題、CPE)"],
+            specialForms: "【專用表格】：須至政大資工系網下載填寫「考生備審資料摘要表」上傳。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "無額外簽章表件。"
+          },
+          {
+            name: "資管系 (資管組 / 科技組)",
+            examType: "審查 50% + 口試 50% (資管組特優逕取免面試，上限1/2)",
+            firstAnnounce: "115/11/13 (面試前3日公布)",
+            interviewDate: "115/11/16 (星期一)",
+            releaseDate: "115/12/01 全校統一放榜",
+            docs: ["重要經歷與成就證明", "專長能力證明", "歷年成績單(含排名)", "自傳與研究計畫", "推薦信2份"],
+            specialForms: "【專用表格】：須至政大資管系網下載「考生基本資料表」，填寫簽名後掃描上傳。",
+            hardLimits: "無嚴格頁數限制。",
+            signatureRule: "考生基本資料表須親筆簽名後掃描。"
+          }
+        ]
+      },
+      {
+        id: "ntust",
+        name: "臺灣科技大學",
+        colorDot: "bg-rose-600",
+        barColor: "from-rose-500 to-pink-600",
+        departmentsSummary: "資工 / 資管 / 人工智慧跨域",
+        regStart: "10/01",
+        regEnd: "10/07",
+        primaryDates: {
+          firstAnnounce: "11/05",
+          interview: "11/13",
+          release: "11/23"
+        },
+        recommendationRule: {
+          quota: "至少 1 封 (選繳)",
+          method: "校方系統線上填寫/上傳",
+          deadline: "10/07 17:00",
+          notes: "系統上傳推薦人資料，推薦人於截止前完成線上推薦，不收紙本推薦信。"
+        },
+        nodes: [
+          { type: "first", date: "11/05", label: "查", title: "台科大 口試名單與時間表公告 (11:00)" },
+          { type: "interview", date: "11/13", label: "試", title: "🔥【面試大撞期】台科大 資工/資管/AI口試 (11/13-11/15)", isConflict: true },
+          { type: "interview", date: "11/14", label: "試", title: "🔥【面試大撞期】台科大 第二天口試", isConflict: true },
+          { type: "release", date: "11/23", label: "榜", title: "台科大 總成績寄發/公告放榜" }
+        ],
+        departments: [
+          {
+            name: "資工系 (甲組 / 乙組)",
+            examType: "審查 + 口試 (審查擇優 50% 免口試逕取)",
+            firstAnnounce: "115/11/05 11:00 公告口試名單",
+            interviewDate: "115/11/13 - 11/15",
+            releaseDate: "115/11/23 總成績公告放榜",
+            docs: ["歷年成績單(含名次證明)", "進修計畫書", "推薦信至少1封(選繳)", "專題/著作/獲獎證明"],
+            specialForms: "【專用表格】：須於台科大上傳系統下載並填寫「個人基本資料表」。",
+            hardLimits: "無特殊頁數限制。",
+            signatureRule: "無。"
+          },
+          {
+            name: "資管系 (甲組 / 乙組)",
+            examType: "審查 40% + 口試 60% (初審擇優 50% 免口試逕取)",
+            firstAnnounce: "115/11/05 公告口試名單",
+            interviewDate: "115/11/13 - 11/15",
+            releaseDate: "115/11/23 總成績公告放榜",
+            docs: ["歷年成績單(含名次)", "英檢證明", "進修計畫書", "其他有利資料", "推薦信(選繳)"],
+            specialForms: "【專用表格】：須於系統下載填寫「個人基本資料表」（含簡歷、專長、自傳）。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "無。"
+          },
+          {
+            name: "人工智慧跨域科技所",
+            examType: "審查 50% + 口試 50%",
+            firstAnnounce: "115/11/05 公告口試名單",
+            interviewDate: "115/11/13 - 11/15",
+            releaseDate: "115/11/23 總成績公告放榜",
+            docs: ["歷年成績單(名次證明)", "自傳(含研究興趣及進修計畫)", "推薦信至少1封", "技術證照/專題成果"],
+            specialForms: "【專用表格】：須於系統下載填寫「個人基本資料表」。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "無。"
+          }
+        ]
+      },
+      {
+        id: "nkust",
+        name: "高雄科技大學",
+        colorDot: "bg-amber-600",
+        barColor: "from-amber-500 to-orange-600",
+        departmentsSummary: "資工(建工) / 資管(燕巢)",
+        regStart: "09/15",
+        regEnd: "10/06",
+        primaryDates: {
+          firstAnnounce: "10/30",
+          interview: "11/07",
+          release: "11/19"
+        },
+        recommendationRule: {
+          quota: "資工 2 封 / 資管免繳",
+          method: "校方招生系統線上填寫",
+          deadline: "10/06 17:00",
+          notes: "報名期間於系統登錄推薦人，推薦人點開信件線上填寫送出。"
+        },
+        nodes: [
+          { type: "first", date: "10/30", label: "查", title: "高科大 初審結果公告 & 准考證列印 (10:00)" },
+          { type: "interview", date: "11/07", label: "試", title: "高科大 資工/資管面試 (星期六)" },
+          { type: "release", date: "11/19", label: "榜", title: "高科大 正式放榜 (10:00)" }
+        ],
+        departments: [
+          {
+            name: "資工系 (建工校區)",
+            examType: "書審 50% + 面試 50%",
+            firstAnnounce: "115/10/30 10:00 公告初審",
+            interviewDate: "115/11/07 (星期六)",
+            releaseDate: "115/11/19 10:00 正式放榜",
+            docs: ["歷年成績單(務必含班排或系排)", "自傳", "學習及研究計畫", "能力證明(CPE/iPAS證照/專題/英檢)", "推薦函2封"],
+            specialForms: "【專題專用表格】：專題報告需附「專題報告摘要說明表」（及分工說明）。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "【專題分工簽章】：繳交專題需依指定表單填寫團隊分工與簽核。"
+          },
+          {
+            name: "資管系 (燕巢校區)",
+            examType: "書審 + 面試",
+            firstAnnounce: "115/10/30 10:00 公告初審",
+            interviewDate: "115/11/07 (星期六)",
+            releaseDate: "115/11/19 10:00 正式放榜",
+            docs: ["歷年成績單(含總成績名次、班系排名)", "自傳", "學習及生涯規劃書", "經歷證明(專題、著作、證照、競賽)"],
+            specialForms: "確認成績單上具備名次標記與排名證明。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "無。"
+          }
+        ]
+      },
+      {
+        id: "yuntech",
+        name: "雲林科技大學",
+        colorDot: "bg-lime-600",
+        barColor: "from-lime-500 to-green-600",
+        departmentsSummary: "資工系 (甲/乙組) / 資管系",
+        regStart: "09/29",
+        regEnd: "10/15",
+        primaryDates: {
+          firstAnnounce: "11/10",
+          interview: "11/13",
+          release: "11/30"
+        },
+        recommendationRule: {
+          quota: "2 封",
+          method: "系統「推薦信作業」線上填寫",
+          deadline: "10/16 17:00",
+          notes: "中英文對照格式，推薦人填完後系統即時顯示「已填寫推薦信」。"
+        },
+        nodes: [
+          { type: "first", date: "11/10", label: "查", title: "雲科大 第一階段初審合格名單公告 & 資工逕取放榜 (10:00)" },
+          { type: "interview", date: "11/13", label: "試", title: "🔥【面試大撞期】雲科大 資工系面試", isConflict: true },
+          { type: "interview", date: "11/14", label: "試", title: "🔥【面試大撞期】雲科大 資管系面試 (星期六)", isConflict: true },
+          { type: "release", date: "11/30", label: "榜", title: "雲科大 全校網路榜單公告放榜" }
+        ],
+        departments: [
+          {
+            name: "資工系 (甲組-資工 / 乙組-AI資安)",
+            examType: "審查 50% + 面試 50% (初審特優 50% 逕取免面試)",
+            firstAnnounce: "115/11/10 10:00 全校統一公告名單與逕取",
+            interviewDate: "115/11/13 (星期五)",
+            releaseDate: "逕取 11/10；正式榜示 11/30",
+            docs: ["自傳簡歷", "學習研究計畫書", "名次證明書", "推薦信2封", "有利資料(CPE題數、英檢)"],
+            specialForms: "【系統專用強制欄位】：上傳專題報告時，系統欄位須登打專題題目與「個人貢獻度比例說明」。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "【貢獻度聲明】：線上填報專題之組員比例說明。"
+          },
+          {
+            name: "資管系碩士班",
+            examType: "初審 + 面試",
+            firstAnnounce: "115/11/10 10:00 全校統一公告面試名單",
+            interviewDate: "115/11/14 (星期六)",
+            releaseDate: "115/11/30 正式榜示",
+            docs: ["名次證明書", "自傳與學習研究計畫書", "推薦信2封", "研究(專題)報告", "有利審查資料"],
+            specialForms: "【系統專用強制欄位】：專題報告須線上註明參與人員姓名與「個人貢獻度說明」。",
+            hardLimits: "無頁數限制。",
+            signatureRule: "【貢獻度聲明】：線上填報組員名單與個人百分比。"
+          }
+        ]
+      }
+    ];
+
+    let currentEventFilter = 'all';
+    let onlyHighlightConflicts = false;
+    let currentSortMode = 'default';
+    let sortAscending = true;
+
+    // Build Gantt Header Row
+    function initGanttHeader() {
+      const headerRow = document.getElementById('gantt-header-row');
+      headerRow.innerHTML = `
+        <th class="py-3 px-4 w-64 min-w-[250px] max-w-[250px] sticky left-0 bg-slate-50 z-30 border-r border-slate-200 font-bold text-slate-800">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-extrabold">學校與組別</span>
+            <span class="text-xs text-slate-400 font-normal">09/14 - 12/05</span>
+          </div>
+        </th>
+      `;
+
+      daysArray.forEach(d => {
+        const th = document.createElement('th');
+        th.className = `gantt-day-col py-1.5 text-center font-normal border-r border-slate-200/60 transition ${d.isConflict ? 'day-conflict' : ''}`;
+        
+        let monthHeader = '';
+        if (d.isFirstDayOfMonth || d.index === 0) {
+          monthHeader = `<div class="text-[11px] font-extrabold text-sky-700 leading-tight">${d.month}月</div>`;
+        }
+
+        th.innerHTML = `
+          ${monthHeader}
+          <div class="text-xs font-bold text-slate-700">${d.day}</div>
+          <div class="text-[10px] text-slate-400">${d.weekDay}</div>
+        `;
+        headerRow.appendChild(th);
+      });
+    }
+
+    // Sort function for the matrix data
+    function getSortedSchoolData() {
+      const cloned = [...schoolMatrixData];
+      if (currentSortMode === 'default') {
+        return sortAscending ? cloned : cloned.reverse();
+      }
+
+      cloned.sort((a, b) => {
+        let valA = 9999;
+        let valB = 9999;
+
+        if (currentSortMode === 'regStart') {
+          valA = dateToIndex(a.regStart);
+          valB = dateToIndex(b.regStart);
+        } else if (currentSortMode === 'regEnd') {
+          valA = dateToIndex(a.regEnd);
+          valB = dateToIndex(b.regEnd);
+        } else if (currentSortMode === 'firstAnnounce') {
+          valA = dateToIndex(a.primaryDates.firstAnnounce);
+          valB = dateToIndex(b.primaryDates.firstAnnounce);
+        } else if (currentSortMode === 'interview') {
+          valA = dateToIndex(a.primaryDates.interview);
+          valB = dateToIndex(b.primaryDates.interview);
+        } else if (currentSortMode === 'release') {
+          valA = dateToIndex(a.primaryDates.release);
+          valB = dateToIndex(b.primaryDates.release);
+        }
+
+        if (valA === -1) valA = 9999;
+        if (valB === -1) valB = 9999;
+
+        return sortAscending ? valA - valB : valB - valA;
+      });
+
+      return cloned;
+    }
+
+    // Render Gantt Rows (Robust Clamped Bar Logic)
+    function renderGanttRows() {
+      const tbody = document.getElementById('gantt-body-rows');
+      tbody.innerHTML = '';
+
+      const dataset = getSortedSchoolData();
+
+      dataset.forEach((school) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/70 transition group";
+
+        // Left frozen column with School Name
+        const tdLeft = document.createElement('td');
+        tdLeft.className = "py-3 px-4 w-64 min-w-[250px] max-w-[250px] sticky left-0 bg-white group-hover:bg-slate-50 z-20 border-r border-slate-200 shadow-[2px_0_4px_rgba(0,0,0,0.02)]";
+        tdLeft.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <span class="w-3.5 h-3.5 rounded-full ${school.colorDot} shrink-0"></span>
+            <span class="font-extrabold text-slate-900 text-sm tracking-tight">${school.name}</span>
+          </div>
+          <div class="text-xs text-slate-500 font-medium mt-1 truncate" title="${school.departmentsSummary}">
+            ${school.departmentsSummary}
+          </div>
+        `;
+        tr.appendChild(tdLeft);
+
+        // Day index of registration with boundary safety clamping
+        let rawStartIndex = dateToIndex(school.regStart);
+        let rawEndIndex = dateToIndex(school.regEnd);
+
+        let regStartIndex = rawStartIndex;
+        let regEndIndex = rawEndIndex;
+
+        // Auto clamp if started before grid
+        let startedBefore = false;
+        if (regStartIndex === -1 && regEndIndex !== -1) {
+          regStartIndex = 0;
+          startedBefore = true;
+        }
+
+        // Create an empty cell for each day in daysArray
+        const cellMap = {};
+        for (let i = 0; i < daysArray.length; i++) {
+          const td = document.createElement('td');
+          td.className = `gantt-day-col p-0 border-r border-slate-100 relative h-14 ${daysArray[i].isConflict && onlyHighlightConflicts ? 'conflict-highlight' : ''}`;
+          tr.appendChild(td);
+          cellMap[i] = td;
+        }
+
+        // Render Registration Bar if filter permits
+        if (currentEventFilter === 'all' || currentEventFilter === 'reg') {
+          if (regStartIndex !== -1 && regEndIndex !== -1 && regEndIndex >= regStartIndex) {
+            const barStartCell = cellMap[regStartIndex];
+            const spanDays = (regEndIndex - regStartIndex + 1);
+            const barWidthPx = spanDays * 36 - 4; // 36px col width
+
+            const regBar = document.createElement('div');
+            regBar.className = `absolute top-3 left-0.5 h-8 z-10 bg-gradient-to-r ${school.barColor} text-white rounded-lg shadow-sm flex items-center px-2 text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer transition hover:opacity-95 pointer-events-auto`;
+            regBar.style.width = `${barWidthPx}px`;
+            regBar.title = `${school.name} 報名與審查資料上傳：${school.regStart} 至 ${school.regEnd}`;
+            regBar.innerHTML = `<span class="truncate">${startedBefore ? '◀ ' : ''}📝 報名 ${school.regStart} - ${school.regEnd}</span>`;
+            if (barStartCell) {
+              barStartCell.appendChild(regBar);
+            }
+          }
+        }
+
+        // Render Discrete Nodes (Circles)
+        school.nodes.forEach(node => {
+          const nIndex = dateToIndex(node.date);
+          if (nIndex === -1) return;
+
+          // Event type filtering
+          if (currentEventFilter !== 'all') {
+            if (currentEventFilter === 'first' && node.type !== 'first') return;
+            if (currentEventFilter === 'interview' && node.type !== 'interview') return;
+            if (currentEventFilter === 'release' && node.type !== 'release') return;
+            if (currentEventFilter === 'reg') return;
+          }
+
+          // Conflict highlight filter
+          if (onlyHighlightConflicts && !node.isConflict && node.type === 'interview') {
+            return;
+          }
+
+          const cell = cellMap[nIndex];
+          if (!cell) return;
+
+          const circle = document.createElement('div');
+          
+          let colorClasses = "bg-slate-700 text-white";
+          if (node.type === 'first') colorClasses = "bg-amber-500 text-white shadow ring-2 ring-white";
+          if (node.type === 'interview') {
+            colorClasses = node.isConflict 
+              ? "bg-rose-600 text-white font-black shadow-md ring-2 ring-rose-200 animate-pulse" 
+              : "bg-blue-600 text-white shadow ring-2 ring-white";
+          }
+          if (node.type === 'release') colorClasses = "bg-slate-800 text-white shadow ring-2 ring-white";
+          if (node.type === 'slide') colorClasses = "bg-purple-700 text-white ring-2 ring-purple-200";
+
+          circle.className = `absolute top-2.5 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full ${colorClasses} flex items-center justify-center text-xs font-bold z-20 cursor-pointer hover:scale-125 transition`;
+          circle.innerHTML = node.label;
+          circle.title = `${node.title} (${node.date})`;
+          cell.appendChild(circle);
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Sort Handlers
+    function handleSortChange() {
+      const select = document.getElementById('gantt-sort-select');
+      currentSortMode = select.value;
+      renderGanttRows();
+    }
+
+    function toggleSortOrder() {
+      sortAscending = !sortAscending;
+      const icon = document.getElementById('sort-dir-icon');
+      if (sortAscending) {
+        icon.className = "fa-solid fa-arrow-up-wide-short";
+      } else {
+        icon.className = "fa-solid fa-arrow-down-wide-short";
+      }
+      renderGanttRows();
+    }
+
+    // Event Filter Handlers
+    function setEventFilter(filter) {
+      currentEventFilter = filter;
+      const btns = ['all', 'reg', 'first', 'interview', 'release'];
+      btns.forEach(b => {
+        const el = document.getElementById(`btn-filter-${b}`);
+        if (b === filter) {
+          el.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-slate-900 text-white shadow-sm transition";
+        } else {
+          el.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+        }
+      });
+      renderGanttRows();
+    }
+
+    function toggleConflictHighlight() {
+      const chk = document.getElementById('conflict-toggle');
+      onlyHighlightConflicts = chk.checked;
+
+      // Highlight day cols in table header
+      document.querySelectorAll('#gantt-table th').forEach(th => {
+        if (th.classList.contains('day-conflict')) {
+          if (onlyHighlightConflicts) {
+            th.classList.add('bg-rose-100', 'text-rose-900');
+          } else {
+            th.classList.remove('bg-rose-100', 'text-rose-900');
+          }
+        }
+      });
+
+      renderGanttRows();
+    }
+
+    // 3. Render School & Department Detailed Cards
+    function renderSchoolDeptCards() {
+      const container = document.getElementById('school-dept-cards-container');
+      const query = (document.getElementById('dept-search-input')?.value || '').toLowerCase().trim();
+      container.innerHTML = '';
+
+      const filtered = schoolMatrixData.filter(s => {
+        if (!query) return true;
+        const matchSchool = s.name.toLowerCase().includes(query);
+        const matchDept = s.departments.some(d => 
+          d.name.toLowerCase().includes(query) || 
+          d.docs.some(doc => doc.toLowerCase().includes(query)) ||
+          (d.specialForms && d.specialForms.toLowerCase().includes(query)) ||
+          (d.hardLimits && d.hardLimits.toLowerCase().includes(query)) ||
+          (d.signatureRule && d.signatureRule.toLowerCase().includes(query))
+        );
+        return matchSchool || matchDept;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center text-slate-400 bg-white rounded-2xl border border-dashed border-slate-300">
+            <i class="fa-regular fa-face-frown text-4xl mb-3"></i>
+            <p class="text-base font-semibold">查無符合「${query}」的學校或系組資料</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(school => {
+        const card = document.createElement('div');
+        card.className = "bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between";
+
+        let deptsHtml = '';
+        school.departments.forEach((d, idx) => {
+          deptsHtml += `
+            <div class="mt-5 pt-5 ${idx > 0 ? 'border-t border-slate-200' : ''}">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full ${school.colorDot}"></span>
+                  ${d.name}
+                </h4>
+                <span class="text-xs font-bold px-3 py-1 rounded-lg ${d.interviewDate.includes('11/06') || d.interviewDate.includes('11/13') || d.interviewDate.includes('11/14') ? 'bg-rose-100 text-rose-800 border border-rose-200' : 'bg-slate-100 text-slate-700'}">
+                  面試：${d.interviewDate}
+                </span>
+              </div>
+
+              <!-- Metrics -->
+              <div class="mt-3 text-sm grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-700">
+                <div><span class="text-slate-500 font-semibold">考核方式：</span>${d.examType}</div>
+                <div><span class="text-slate-500 font-semibold">初審公告：</span>${d.firstAnnounce}</div>
+                <div class="sm:col-span-2"><span class="text-slate-500 font-semibold">放榜日期：</span><strong class="text-emerald-700 font-bold">${d.releaseDate}</strong></div>
+              </div>
+
+              <!-- Specified Docs -->
+              <div class="mt-3">
+                <span class="text-xs text-slate-500 font-semibold block mb-1.5">指定備審項目：</span>
+                <div class="flex flex-wrap gap-1.5">
+                  ${d.docs.map(doc => `<span class="px-2.5 py-1 bg-slate-100 text-slate-800 rounded-lg text-xs font-medium border border-slate-200">${doc}</span>`).join('')}
+                </div>
+              </div>
+
+              <!-- Special Forms Alert -->
+              ${d.specialForms ? `
+                <div class="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs sm:text-sm text-amber-900 leading-relaxed font-medium">
+                  <i class="fa-solid fa-triangle-exclamation text-amber-600 mr-1.5"></i>
+                  ${d.specialForms}
+                </div>
+              ` : ''}
+
+              <!-- Integrated Special Limits & Signatures Block -->
+              <div class="mt-3 grid grid-cols-1 gap-2 text-xs sm:text-sm">
+                ${d.hardLimits && !d.hardLimits.includes('無特殊') && !d.hardLimits.includes('無頁數') ? `
+                  <div class="p-2.5 bg-rose-50 border border-rose-200 text-rose-900 rounded-xl">
+                    <strong class="font-bold block mb-0.5"><i class="fa-solid fa-file-circle-exclamation mr-1 text-rose-600"></i>特殊頁數硬性限制：</strong>
+                    ${d.hardLimits}
+                  </div>
+                ` : ''}
+
+                ${d.signatureRule && !d.signatureRule.includes('無') ? `
+                  <div class="p-2.5 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl">
+                    <strong class="font-bold block mb-0.5"><i class="fa-solid fa-signature mr-1 text-emerald-600"></i>指定簽章與貢獻度證明：</strong>
+                    ${d.signatureRule}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        // Recommendation Box for the school
+        const recRule = school.recommendationRule;
+        const recBoxHtml = `
+          <div class="mt-4 p-3.5 bg-sky-50/70 border border-sky-200 rounded-xl text-xs sm:text-sm text-sky-950 space-y-1">
+            <div class="flex items-center justify-between font-bold text-sky-900">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-envelope-open-text text-sky-600"></i> 推薦信提交機制：${recRule.quota}</span>
+              <span class="text-xs bg-sky-200/70 text-sky-800 px-2 py-0.5 rounded font-semibold">截止：${recRule.deadline}</span>
+            </div>
+            <p class="text-sky-900/90 text-xs"><strong class="font-semibold">上傳方式：</strong>${recRule.method}</p>
+            <p class="text-sky-800 text-xs">${recRule.notes}</p>
+          </div>
+        `;
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between pb-3.5 border-b border-slate-200">
+              <div class="flex items-center gap-2.5">
+                <span class="w-4 h-4 rounded-full ${school.colorDot}"></span>
+                <h3 class="font-extrabold text-lg text-slate-900">${school.name}</h3>
+              </div>
+              <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                報名：${school.regStart} 至 ${school.regEnd}
+              </span>
+            </div>
+
+            <!-- School Department Summary -->
+            <div class="mt-3 text-xs sm:text-sm text-slate-600">
+              <span class="font-bold text-slate-800">涵蓋組別：</span>${school.departmentsSummary}
+            </div>
+
+            <!-- Recommendation Rules Integrated -->
+            ${recBoxHtml}
+
+            <!-- Departments List -->
+            <div>${deptsHtml}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initGanttHeader();
+      renderGanttRows();
+      renderSchoolDeptCards();
+
+      // Smooth scroll to around late September (approx index 14) for optimal initial view
+      const scrollBox = document.getElementById('gantt-scroll-box');
+      if (scrollBox) {
+        scrollBox.scrollLeft = 36 * 14;
+      }
+    });
+  </script>
+</body>
+</html>
