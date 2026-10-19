@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 研究所推甄日程與行事曆整合平台</title>
+  <!-- 引入 Tailwind CSS 輕量樣式庫 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- 頂部導覽列 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div>
+        <h1 class="text-xl font-bold text-slate-900 tracking-tight">2026 研究所推甄日程整合系統</h1>
+        <p class="text-xs text-slate-500 mt-1">智慧校系整併・初試查詢備忘・一鍵匯出 .ics 行事曆</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="exportIcsBtn" class="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors shadow-sm flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          下載 .ics 行事曆
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要內容區 -->
+  <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
+
+    <!-- 狀態卡片 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div class="text-slate-500 text-xs font-semibold uppercase tracking-wider">目標校系數量</div>
+        <div class="text-2xl font-bold text-slate-800 mt-2" id="totalSchools">11 校 / 15 行程</div>
+      </div>
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div class="text-slate-500 text-xs font-semibold uppercase tracking-wider">高峰面試期（衝堂日）</div>
+        <div class="text-2xl font-bold text-amber-600 mt-2">11/06 & 11/13</div>
+      </div>
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div class="text-slate-500 text-xs font-semibold uppercase tracking-wider">規格相容性</div>
+        <div class="text-2xl font-bold text-emerald-600 mt-2">RFC 5545 (iCal)</div>
+      </div>
+    </div>
+
+    <!-- 篩選列 -->
+    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <label for="schoolFilter" class="text-sm font-medium text-slate-600">學校篩選：</label>
+        <select id="schoolFilter" class="bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="ALL">全部學校</option>
+        </select>
+      </div>
+      <div class="text-xs text-slate-400">
+        💡 提示：同校同日已自動整併為單一行程（例如：成大資工+AI口試）
+      </div>
+    </div>
+
+    <!-- 日程表格卡片 -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="bg-slate-100 text-slate-600 border-b border-slate-200 font-semibold">
+              <th class="py-3 px-4">學校</th>
+              <th class="py-3 px-4">行程標題</th>
+              <th class="py-3 px-4">初試/資格查詢日</th>
+              <th class="py-3 px-4">口試日期</th>
+              <th class="py-3 px-4">類型</th>
+              <th class="py-3 px-4">備註</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleTableBody" class="divide-y divide-slate-100">
+            <!-- 資料透過 JavaScript 動態渲染 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+    2026 研究所推甄行事曆系統 ・ 支援 Apple Calendar, Google Calendar, Outlook
+  </footer>
+
+  <script>
+    // 預設資料來源（已套用同校同日整併規則）
+    const scheduleData = [
+      {
+        school: "交大",
+        title: "交大資工丙組口試",
+        queryDate: "2026-10-24",
+        startDate: "2026-10-27",
+        endDate: "2026-10-27",
+        type: "整日行程",
+        dept: "資工丙組",
+        note: "口試資格於 10/24 查詢"
+      },
+      {
+        school: "成大",
+        title: "成大資管口試",
+        queryDate: "2026-10-27",
+        startDate: "2026-10-29",
+        endDate: "2026-10-29",
+        type: "整日行程",
+        dept: "資訊管理學系",
+        note: "初試查詢 10/27"
+      },
+      {
+        school: "交大",
+        title: "交大資管口試",
+        queryDate: "2026-10-30",
+        startDate: "2026-11-05",
+        endDate: "2026-11-05",
+        type: "整日行程",
+        dept: "資管",
+        note: "資訊聯招為純書審"
+      },
+      {
+        school: "成大",
+        title: "成大資工+AI口試",
+        queryDate: "2026-10-27",
+        startDate: "2026-11-06",
+        endDate: "2026-11-06",
+        type: "整日行程",
+        dept: "資工系、人工智慧學程",
+        note: "同校同日整併"
+      },
+      {
+        school: "台大",
+        title: "台大資管口試",
+        queryDate: "未公布",
+        startDate: "2026-11-06",
+        endDate: "2026-11-06",
+        type: "整日行程",
+        dept: "資訊管理學系",
+        note: "資工為純書審無口試"
+      },
+      {
+        school: "中山",
+        title: "中山資工+資管口試",
+        queryDate: "未公布",
+        startDate: "2026-11-06",
+        endDate: "2026-11-06",
+        type: "整日行程",
+        dept: "資訊工程系、資訊管理系",
+        note: "同校同日整併"
+      },
+      {
+        school: "中正",
+        title: "中正資工+資管口試",
+        queryDate: "未公布",
+        startDate: "2026-11-13",
+        endDate: "2026-11-13",
+        type: "整日行程",
+        dept: "資訊工程系、資訊管理系",
+        note: "同校同日整併"
+      },
+      {
+        school: "中興",
+        title: "中興資工+資管口試",
+        queryDate: "未公布",
+        startDate: "2026-11-13",
+        endDate: "2026-11-13",
+        type: "整日行程",
+        dept: "資訊工程系、資訊管理系",
+        note: "同校同日整併"
+      },
+      {
+        school: "雲科",
+        title: "雲科資工口試",
+        queryDate: "未公布",
+        startDate: "2026-11-13",
+        endDate: "2026-11-13",
+        type: "整日行程",
+        dept: "資訊工程系",
+        note: "資管於 11/14 口試"
+      },
+      {
+        school: "台科",
+        title: "台科資工+資管+AI口試",
+        queryDate: "2026-11-05",
+        startDate: "2026-11-13",
+        endDate: "2026-11-15",
+        type: "多日行程 (3天)",
+        dept: "資工系、資管系、AI跨域學程",
+        note: "匡列 11/13–11/15"
+      },
+      {
+        school: "清大",
+        title: "清大資應口試",
+        queryDate: "2026-10-22",
+        startDate: "2026-11-14",
+        endDate: "2026-11-14",
+        type: "整日行程",
+        dept: "資訊系統與應用研究所",
+        note: "資工純書審無口試"
+      },
+      {
+        school: "雲科",
+        title: "雲科資管口試",
+        queryDate: "未公布",
+        startDate: "2026-11-14",
+        endDate: "2026-11-14",
+        type: "整日行程",
+        dept: "資訊管理系",
+        note: "資工於 11/13 口試"
+      },
+      {
+        school: "政大",
+        title: "政大資管口試",
+        queryDate: "未公布",
+        startDate: "2026-11-16",
+        endDate: "2026-11-16",
+        type: "整日行程",
+        dept: "資訊管理學系",
+        note: "初試放榜 12/01"
+      },
+      {
+        school: "北科",
+        title: "北科資工+AI口試",
+        queryDate: "未公布",
+        startDate: "2026-11-20",
+        endDate: "2026-11-20",
+        type: "整日行程",
+        dept: "資工系、AI學程",
+        note: "同校同日整併"
+      },
+      {
+        school: "政大",
+        title: "政大資工口試",
+        queryDate: "未公布",
+        startDate: "2026-11-21",
+        endDate: "2026-11-21",
+        type: "整日行程",
+        dept: "資訊科學系",
+        note: "初試放榜 12/01"
+      }
+    ];
+
+    // 初始化渲染表格
+    const tableBody = document.getElementById("scheduleTableBody");
+    const schoolFilter = document.getElementById("schoolFilter");
+
+    function renderTable(filter = "ALL") {
+      tableBody.innerHTML = "";
+      const filtered = filter === "ALL" ? scheduleData : scheduleData.filter(d => d.school === filter);
+
+      filtered.forEach(item => {
+        const isMultiDay = item.startDate !== item.endDate;
+        const displayDate = isMultiDay ? `${item.startDate} ~ ${item.endDate}` : item.startDate;
+
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 transition-colors";
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-bold text-slate-900">${item.school}</td>
+          <td class="py-3 px-4 text-blue-700 font-medium">${item.title}</td>
+          <td class="py-3 px-4">
+            <span class="${item.queryDate === '未公布' ? 'text-slate-400 italic' : 'text-slate-700 font-mono'}">${item.queryDate}</span>
+          </td>
+          <td class="py-3 px-4 font-mono text-slate-800">${displayDate}</td>
+          <td class="py-3 px-4">
+            <span class="inline-block px-2 py-0.5 text-xs rounded-md ${isMultiDay ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}">${item.type}</span>
+          </td>
+          <td class="py-3 px-4 text-xs text-slate-500">${item.note}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // 初始化學校篩選下拉選單
+    const schools = [...new Set(scheduleData.map(d => d.school))];
+    schools.forEach(school => {
+      const opt = document.createElement("option");
+      opt.value = school;
+      opt.textContent = school;
+      schoolFilter.appendChild(opt);
+    });
+
+    schoolFilter.addEventListener("change", (e) => {
+      renderTable(e.target.value);
+    });
+
+    renderTable();
+
+    // 格式化日期為 iCalendar DTEND (隔日邏輯)
+    function getNextDayString(dateStr) {
+      const d = new Date(dateStr);
+      d.setDate(d.getDate() + 1);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}${mm}${dd}`;
+    }
+
+    function formatDateForIcs(dateStr) {
+      return dateStr.replace(/-/g, "");
+    }
+
+    // 匯出 RFC 5545 格式的 .ics 檔案
+    document.getElementById("exportIcsBtn").addEventListener("click", () => {
+      const now = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+      let icsContent = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Graduate School Interview Schedule//TW",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        "X-WR-CALNAME:2026 研究所推甄口試日程",
+        "X-WR-TIMEZONE:Asia/Taipei"
+      ];
+
+      scheduleData.forEach((item, index) => {
+        const uid = `interview-2026-${index}-${item.school}@admissions.tw`;
+        const dtstart = formatDateForIcs(item.startDate);
+        const dtend = getNextDayString(item.endDate);
+
+        icsContent.push(
+          "BEGIN:VEVENT",
+          `UID:${uid}`,
+          `DTSTAMP:${now}`,
+          `DTSTART;VALUE=DATE:${dtstart}`,
+          `DTEND;VALUE=DATE:${dtend}`,
+          `SUMMARY:${item.title}`,
+          `DESCRIPTION:${item.school} ${item.dept} 口試日程\\n備註：${item.note}`,
+          "STATUS:CONFIRMED",
+          "TRANSP:TRANSPARENT",
+          "END:VEVENT"
+        );
+      });
+
+      icsContent.push("END:VCALENDAR");
+
+      // 下載 blob 檔案
+      const blob = new Blob([icsContent.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "2026_Graduate_School_Interviews.ics";
+      document.body.
